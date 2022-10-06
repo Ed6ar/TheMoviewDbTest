@@ -1,4 +1,4 @@
-package com.vum.themoviedbapptest
+package com.vum.themoviedbapptest.core
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
