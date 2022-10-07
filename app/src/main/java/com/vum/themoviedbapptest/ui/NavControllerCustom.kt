@@ -9,7 +9,7 @@ import androidx.navigation.compose.composable
 import com.vum.themoviedbapptest.data.models.Destinations
 import com.vum.themoviedbapptest.data.models.NavigationHolder
 import com.vum.themoviedbapptest.ui.views.MovieDetail
-import com.vum.themoviedbapptest.ui.views.TopRatedView
+import com.vum.themoviedbapptest.ui.views.topRated.TopRatedView
 
 @Composable
 fun NavControllerCustom(navController: NavHostController) {

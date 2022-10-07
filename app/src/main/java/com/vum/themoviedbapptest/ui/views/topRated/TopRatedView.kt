@@ -1,4 +1,4 @@
-package com.vum.themoviedbapptest.ui.views
+package com.vum.themoviedbapptest.ui.views.topRated
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
@@ -17,6 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vum.themoviedbapptest.ui.theme.TheMovieDBAppTestTheme
 import com.vum.themoviedbapptest.ui.viewModels.TopRatedViewModel
+import com.vum.themoviedbapptest.ui.views.TopRatedCardPreview
 import org.koin.androidx.compose.getViewModel
 
 @Preview
