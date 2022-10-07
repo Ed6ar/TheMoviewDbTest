@@ -1,4 +1,4 @@
-package com.vum.themoviedbapptest.data.models.responses
+package com.vum.themoviedbapptest.data.models.responses.getTopRated
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName

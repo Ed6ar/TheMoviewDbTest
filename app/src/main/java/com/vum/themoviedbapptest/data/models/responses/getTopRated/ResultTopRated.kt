@@ -1,4 +1,4 @@
-package com.vum.themoviedbapptest.data.models.responses
+package com.vum.themoviedbapptest.data.models.responses.getTopRated
 
 data class ResultTopRated(
     val adult: Boolean,

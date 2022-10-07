@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">TheMovieDBAppTest</string>
+    <string name="title">Título</string>
+    <string name="releaseDate">Fecha de estreno</string>
 
     <!--Errors-->
-    <string name="unexpectedError">Algo salió mal consultando la lista de películas.</string>
+    <string name="unexpectedErrorLoadingTopRate">Algo salió mal consultando la lista de películas.</string>
+    <string name="unexpectedErrorLoadingMovieDetail">Algo salió mal consultando la información de la película.</string>
 </resources>

@@ -1,20 +1,19 @@
 package com.vum.themoviedbapptest.domine
 
-import android.util.Log
 import com.vum.themoviedbapptest.R
 import com.vum.themoviedbapptest.data.models.Resource
-import com.vum.themoviedbapptest.data.models.requests.GetTopRated
-import com.vum.themoviedbapptest.data.models.responses.Content
+import com.vum.themoviedbapptest.data.models.requests.GetTopRatedRequest
+import com.vum.themoviedbapptest.data.models.responses.getTopRated.Content
 import retrofit2.Retrofit
 
 class GetTopRatedUseCase(
-    private val retrofit: Retrofit,
+    private val retrofit: Retrofit
 ) {
     suspend fun execute(apiKey: String): Resource<Content> {
 
-        val getTopRated = retrofit.create(GetTopRated::class.java)
+        val getTopRated = retrofit.create(GetTopRatedRequest::class.java)
         val response = getTopRated.execute(
-            api_key = apiKey,
+            apiKey = apiKey,
             language = "en-US",
             page = 1
         )
@@ -27,7 +26,7 @@ class GetTopRatedUseCase(
             else
                 Resource.Error(data = null, message = response.errorBody().toString())
         }catch (e: Exception) {
-            Resource.Exception(message = R.string.unexpectedError)
+            Resource.Exception(message = R.string.unexpectedErrorLoadingTopRate)
         }
     }
 
