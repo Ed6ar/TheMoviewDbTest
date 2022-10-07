@@ -21,11 +21,11 @@ class GetTopRatedUseCase(
         val result = response.body()
 
         return try {
-            if(response.isSuccessful && result != null)
+            if (response.isSuccessful && result != null)
                 Resource.Success(data = result)
             else
                 Resource.Error(data = null, message = response.errorBody().toString())
-        }catch (e: Exception) {
+        } catch (e: Exception) {
             Resource.Exception(message = R.string.unexpectedErrorLoadingTopRate)
         }
     }

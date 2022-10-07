@@ -21,6 +21,7 @@ class GetMovieDetailUseCase(
         val result = response.body()
 
         return try {
+            throw Exception()
             if(response.isSuccessful && result != null)
                 Resource.Success(data = result)
             else

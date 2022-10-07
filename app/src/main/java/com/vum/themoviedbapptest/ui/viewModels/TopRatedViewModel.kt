@@ -1,6 +1,5 @@
 package com.vum.themoviedbapptest.ui.viewModels
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.vum.themoviedbapptest.core.API_KEY
@@ -15,27 +14,43 @@ import retrofit2.Retrofit
 
 class TopRatedViewModel(
     private val retrofit: Retrofit
-): ViewModel() {
+) : ViewModel() {
 
     private var _topRatedList = MutableStateFlow<List<ResultTopRated>?>(null)
     var topRatedList = _topRatedList.asStateFlow()
 
-    internal fun tryToGetTopRete(){
+    private var _showError = MutableStateFlow<Pair<Int?, String?>?>(null)
+    var showError = _showError.asStateFlow()
+
+    private var _showLoading = MutableStateFlow(true)
+    var showLoading = _showLoading.asStateFlow()
+
+    internal fun tryToGetTopRete() {
         viewModelScope.launch(Dispatchers.IO) {
 
-            when(val resource = GetTopRatedUseCase(retrofit).execute(apiKey = API_KEY)){
+            when (val resource = GetTopRatedUseCase(retrofit).execute(apiKey = API_KEY)) {
                 is Resource.Success -> {
                     _topRatedList.value = resource.data!!.results
+                    setLoadingState(false)
                 }
                 is Resource.Error -> {
-                    Log.e("LIST_OF","Error: ${resource.message}")
+                    showError(Pair(null, resource.message))
+                    setLoadingState(false)
                 }
                 is Resource.Exception -> {
-                    Log.e("LIST_OF","Exception: ${resource.int}")
+                    showError(Pair(resource.int, null))
+                    setLoadingState(false)
                 }
             }
-
         }
+    }
+
+    private fun setLoadingState(state: Boolean) {
+        _showLoading.value = state
+    }
+
+    private fun showError(value: Pair<Int?, String?>?) {
+        _showError.value = value
     }
 
 }

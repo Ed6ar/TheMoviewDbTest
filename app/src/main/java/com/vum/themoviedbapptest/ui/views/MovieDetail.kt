@@ -1,5 +1,6 @@
 package com.vum.themoviedbapptest.ui.views
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.CircularProgressIndicator
@@ -11,6 +12,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -38,6 +40,9 @@ fun MovieDetail(
 ) {
 
     val movieDetail by viewModel.movieDetail.collectAsState()
+    val showLoading by viewModel.showLoading.collectAsState()
+    val showError by viewModel.showError.collectAsState()
+    val context = LocalContext.current
 
     LaunchedEffect(key1 = "init") {
         viewModel.tryToGetMovieDetail(movieId = movieId)
@@ -48,53 +53,66 @@ fun MovieDetail(
         verticalArrangement = Arrangement.spacedBy(15.dp),
         horizontalAlignment = Alignment.Start
     ) {
-        if(movieDetail != null){
-            Image(
-                painter = rememberImagePainter(
-                    data = IMAGE_BASE_URL.plus(movieDetail!!.poster_path),
-                    builder = {
-                        crossfade(true)
-                    }
-                ),
-                contentDescription = "Movie image",
-                modifier = Modifier
-                    .height(300.dp)
-                    .fillMaxWidth(),
-                contentScale = ContentScale.FillBounds
-            )
-
-            Text(
-                text = stringResource(id = R.string.title),
-                modifier = Modifier.padding(start = 20.dp),
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold
-            )
-
-            Text(
-                text = movieDetail!!.title,
-                modifier = Modifier.padding(start = 20.dp),
-                fontSize = 18.sp,
-            )
-
-            Text(
-                text = stringResource(id = R.string.releaseDate),
-                modifier = Modifier.padding(start = 20.dp),
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold
-            )
-
-            Text(
-                text = movieDetail!!.release_date,
-                modifier = Modifier.padding(start = 20.dp),
-                fontSize = 18.sp
-            )
-
-        }else{
+        if (showLoading) {
             CircularProgressIndicator(
                 modifier = Modifier
                     .height(150.dp)
                     .width(150.dp)
             )
+        } else {
+            movieDetail?.let {
+                Image(
+                    painter = rememberImagePainter(
+                        data = IMAGE_BASE_URL.plus(movieDetail!!.poster_path),
+                        builder = {
+                            crossfade(true)
+                        }
+                    ),
+                    contentDescription = "Movie image",
+                    modifier = Modifier
+                        .height(300.dp)
+                        .fillMaxWidth(),
+                    contentScale = ContentScale.FillBounds
+                )
+
+                Text(
+                    text = stringResource(id = R.string.title),
+                    modifier = Modifier.padding(start = 20.dp),
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold
+                )
+
+                Text(
+                    text = movieDetail!!.title,
+                    modifier = Modifier.padding(start = 20.dp),
+                    fontSize = 18.sp,
+                )
+
+                Text(
+                    text = stringResource(id = R.string.releaseDate),
+                    modifier = Modifier.padding(start = 20.dp),
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold
+                )
+
+                Text(
+                    text = movieDetail!!.release_date,
+                    modifier = Modifier.padding(start = 20.dp),
+                    fontSize = 18.sp
+                )
+            }
+        }
+    }
+
+    val errorMessage = when {
+        showError?.first != null -> stringResource(id = showError!!.first!!)
+        showError?.second != null -> showError!!.second
+        else -> ""
+    }
+
+    LaunchedEffect(key1 = errorMessage) {
+        if (errorMessage!!.isNotEmpty()) {
+            Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
         }
     }
 
