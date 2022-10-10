@@ -25,6 +25,7 @@ import com.vum.themoviedbapptest.R
 import com.vum.themoviedbapptest.core.IMAGE_BASE_URL
 import com.vum.themoviedbapptest.ui.theme.TheMovieDBAppTestTheme
 import com.vum.themoviedbapptest.ui.viewModels.MovieDetailViewModel
+import com.vum.themoviedbapptest.ui.views.commonElements.NotInternetConnection
 import org.koin.androidx.compose.getViewModel
 
 @Preview
@@ -45,65 +46,70 @@ fun MovieDetail(
     val showLoading by viewModel.showLoading.collectAsState()
     val showError by viewModel.showError.collectAsState()
     val context = LocalContext.current
+    val internetError by viewModel.internetError.collectAsState()
 
     LaunchedEffect(key1 = "init") {
         viewModel.tryToGetMovieDetail(movieId = movieId)
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState()),
-        verticalArrangement = Arrangement.spacedBy(15.dp),
-        horizontalAlignment = Alignment.Start
-    ) {
-        if (showLoading) {
-            CircularProgressIndicator(
-                modifier = Modifier
-                    .height(150.dp)
-                    .width(150.dp)
-            )
-        } else {
-            movieDetail?.let {
-                Image(
-                    painter = rememberImagePainter(
-                        data = IMAGE_BASE_URL.plus(movieDetail!!.poster_path),
-                        builder = {
-                            crossfade(true)
-                        }
-                    ),
-                    contentDescription = "Movie image",
+    if(internetError){
+        NotInternetConnection()
+    }else{
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState()),
+            verticalArrangement = Arrangement.spacedBy(15.dp),
+            horizontalAlignment = Alignment.Start
+        ) {
+            if (showLoading) {
+                CircularProgressIndicator(
                     modifier = Modifier
-                        .height(300.dp)
-                        .fillMaxWidth(),
-                    contentScale = ContentScale.FillBounds
+                        .height(150.dp)
+                        .width(150.dp)
                 )
+            } else {
+                movieDetail?.let {
+                    Image(
+                        painter = rememberImagePainter(
+                            data = IMAGE_BASE_URL.plus(movieDetail!!.poster_path),
+                            builder = {
+                                crossfade(true)
+                            }
+                        ),
+                        contentDescription = "Movie image",
+                        modifier = Modifier
+                            .height(300.dp)
+                            .fillMaxWidth(),
+                        contentScale = ContentScale.FillBounds
+                    )
 
-                Text(
-                    text = stringResource(id = R.string.title),
-                    modifier = Modifier.padding(start = 20.dp),
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold
-                )
+                    Text(
+                        text = stringResource(id = R.string.title),
+                        modifier = Modifier.padding(start = 20.dp),
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold
+                    )
 
-                Text(
-                    text = movieDetail!!.title,
-                    modifier = Modifier.padding(start = 20.dp),
-                    fontSize = 18.sp,
-                )
+                    Text(
+                        text = movieDetail!!.title,
+                        modifier = Modifier.padding(start = 20.dp),
+                        fontSize = 18.sp,
+                    )
 
-                Text(
-                    text = stringResource(id = R.string.releaseDate),
-                    modifier = Modifier.padding(start = 20.dp),
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold
-                )
+                    Text(
+                        text = stringResource(id = R.string.releaseDate),
+                        modifier = Modifier.padding(start = 20.dp),
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold
+                    )
 
-                Text(
-                    text = movieDetail!!.release_date,
-                    modifier = Modifier.padding(start = 20.dp),
-                    fontSize = 18.sp
-                )
+                    Text(
+                        text = movieDetail!!.release_date,
+                        modifier = Modifier.padding(start = 20.dp),
+                        fontSize = 18.sp
+                    )
+                }
             }
         }
     }

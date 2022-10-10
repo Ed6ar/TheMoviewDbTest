@@ -6,4 +6,5 @@
     <!--Errors-->
     <string name="unexpectedErrorLoadingTopRate">Algo salió mal consultando la lista de películas.</string>
     <string name="unexpectedErrorLoadingMovieDetail">Algo salió mal consultando la información de la película.</string>
+    <string name="internetException">Error de conexión, revisa tu conexión a internet.</string>
 </resources>
